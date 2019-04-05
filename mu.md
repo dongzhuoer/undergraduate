@@ -59,7 +59,7 @@ DE_gene <- dplyr::filter(fpkm, !!DE$p.value[ , 2] < 0.05)[[1]] %T>% {print(head(
 
 
 
-# KEGG enrichment
+## KEGG enrichment
 
 Now we can perform KEGG enrichment and plot the result
 
@@ -75,7 +75,7 @@ clusterProfiler::dotplot(ekegg, showCategory = Inf) +
 
 
 
-# browse kegg pathway 
+## browse kegg pathway 
 
 ```r
 ekegg <- readr::read_rds('data/kegg-enrich.rds')
@@ -88,7 +88,7 @@ I saved the result on 2018-05-31, when I rerun the code on 2019-04-05, it seems 
 
 
 
-# epilogue
+## epilogue
 
 I tried a variety of combinations, i.e, using 0.01 vs 0.01 for DE cutoff +
 

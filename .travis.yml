@@ -1,0 +1,10 @@
+language: generic
+dist: xenial
+git:
+  depth: false
+  submodules: false
+  
+script: skip
+
+notifications:
+  email: false

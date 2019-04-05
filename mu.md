@@ -90,7 +90,7 @@ I saved the result on 2018-05-31, when I rerun the code on 2019-04-05, it seems 
 
 ## epilogue
 
-I tried a variety of combinations, i.e, using 0.01 vs 0.01 for DE cutoff +
+I tried a variety of combinations (the result is not shown), i.e, using 0.01 vs 0.01 for DE cutoff +
 
 - the factor of food vs genotype
 - the factor of food in knocked out vs wild-type mouse
@@ -99,6 +99,3 @@ I tried a variety of combinations, i.e, using 0.01 vs 0.01 for DE cutoff +
 When I look back on 2019-04-05, I find a interesting point. If you looks at the first row and then the second row (I use p<0.01 for DE), it seems like knock-out of SDHB has similar effect as high hat feed.
 
 ![](image/mu/various-combinations.png)
-
-
-

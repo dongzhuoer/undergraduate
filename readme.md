@@ -1,4 +1,6 @@
-# research in Nankai University other than research training & thesis
+# other research in Nankai University 
+
+For big projects, see research training and [thesis](https://github.com/dongzhuoer/thesis)
 
 -----------------------
 

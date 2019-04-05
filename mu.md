@@ -32,7 +32,7 @@ Thanks for the first answer of this [quesiton](https://support.bioconductor.org/
 
 First, let us calculate differentially expressed gene with **limma**. We will examine the difference caused by feed, i.e, high-fat feed or normal feed
 
-```{r}
+```r
 # the first column is entrez id
 mat <- fpkm %>% dplyr::select(-1) %T>% print;
 #> # A tibble: 18,458 x 20
@@ -63,7 +63,7 @@ DE_gene <- dplyr::filter(fpkm, !!DE$p.value[ , 2] < 0.05)[[1]] %T>% {print(head(
 
 Now we can perform KEGG enrichment and plot the result
 
-```{r}
+```r
 ekegg <- clusterProfiler::enrichKEGG(DE_gene, 'mmu') %T>% 
     readr::write_rds('data/kegg-enrich.rds')
 

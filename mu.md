@@ -4,6 +4,8 @@
 
 这个项目算是可重复科研的一个早期尝试吧，当时还想着让 Travis 自动运行代码，并把结果更新到 GitHub，而且为了显示所有的因素组合，都开始 programmatically generate knitr child document。
 
+论文还没发表，暂时在 bioRxiv: _[Loss of SDHB reprograms energy metabolisms and inhibits high fat diet induced metabolic syndromes](https://doi.org/10.1101/259226)_。可以定期检查 [谷歌学术](https://scholar.google.com/scholar?hl=zh-CN&as_sdt=0%2C5&q=SHDB+Nankai&btnG=) 和 [Scopus](https://www.scopus.com/authid/detail.uri?authorId=55869758300) 。
+
 
 
 ## read data

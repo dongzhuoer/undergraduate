@@ -1,0 +1,65 @@
+---
+title: "Analysis correlation of coverage of duplex group's two segments"
+author: "Zhuoer Dong"
+date: "2018-12-19 (rendered on `r Sys.Date()`)"
+output: 
+  prettydoc::html_pretty:
+    toc: yes
+    number_sections: yes
+  md_document:
+    variant: markdown_github
+    toc: yes
+editor_options: 
+  chunk_output_type: inline
+---
+
+```{r knitr-setup, include=FALSE}
+knitr::opts_chunk$set(fig.width = 12, fig.height = 8, fig.path = "image/cover-corr/")
+knitr::opts_chunk$set(message = FALSE)
+```
+
+```{r echo=FALSE, results="asis", include=knitr::opts_knit$get("rmarkdown.pandoc.to") == "markdown_github"}
+# github_document doesn't support toc, md_documet discard yaml metadata, so I can only do it myself
+cat("<h1 align='center'>", rmarkdown::metadata$title,"</h1>\n")
+cat("<p align='center'>\n", rmarkdown::metadata$author,"</p>\n")
+cat("<p align='center'>\n", rmarkdown::metadata$date,"</p>\n")
+cat("---------------\n")
+```
+
+
+```{r install-pkg, eval=FALSE}
+# install needed R packages
+remotes::update_packages(c("magrittr", "ggplot2", "dplyr", "stringr", "purrr", "tidyr", "testthat", "rlang", "cowplot"), upgrade = TRUE)
+remotes::install_github(c("dongzhuoer/paristools"), upgrade = TRUE)
+```
+```{r install-pkg, include=FALSE, eval=Sys.getenv("CONTINUOUS_INTEGRATION") == "true"}
+```
+
+
+
+# preparation
+
+```{r setup, message=FALSE, warning=FALSE}
+library(magrittr)
+library(dplyr)
+library(ggplot2)
+library(stringr)
+library(purrr)
+```
+
+Set global theme for ggplot
+
+```{r theme}
+theme_set(theme_classic(base_size = 24))
+```
+
+helper function
+
+```{r helper}
+as_integer <- . %>% as.integer() %T>% {.[is.na(.)] = 0L}
+testthat::expect_identical(as_integer(c("12", "")), c(12L, 0L))
+```
+
+
+
+# input files

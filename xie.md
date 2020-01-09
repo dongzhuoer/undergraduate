@@ -17,7 +17,7 @@ auxiliary work at [Qiang Xie](http://lifesciences.sysu.edu.cn/teachers/professor
 - 王艳会
 
 ```r
-tree1 <- ape::read.nexus('data-raw/xie/uniform_calibrations_plusDictyoptera.tree')
+tree1 <- ape::read.nexus('xie/uniform_calibrations_plusDictyoptera.tree')
 ltt1 <- phytools::ltt(tree1, log.lineages = F)
 
 plot(
@@ -28,12 +28,12 @@ x.axis = c(0, seq(0.2638, 6, 0.5))
 x.labels = format(576.38 - x.axis*100, digits = 2)
 axis(1, x.axis, x.labels)
 ```
-![](image/xie/ltt-yanhui.png)
+![](xie/ltt-yanhui.png)
 
 - 吴燕卓
 
 ```r
-tree2 <- ape::read.nexus('data-raw/xie/burnin75.tree')
+tree2 <- ape::read.nexus('xie/burnin75.tree')
 ltt2 <- phytools::ltt(tree2, log.lineages = F)
 
 plot(
@@ -41,7 +41,7 @@ plot(
     xlab = 'Time (million years ago, Ma)', ylab = 'Number of lineages'
 )
 ```
-![](image/xie/ltt-yanzhuo.png)
+![](xie/ltt-yanzhuo.png)
 
 
 
@@ -55,7 +55,7 @@ plot(
 # 在此输入名字
 name <- 'SRR4113498'
 
-fasta <- bioinfor::read_fasta(paste0('data-raw/', name, '.fasta'))
+fasta <- bioinfor::read_fasta(paste0('', name, '.fasta'))
 seq.len <- stringr::str_length(fasta)
 hist(seq.len, breaks = 200)
 
@@ -66,7 +66,7 @@ hist(seq.len[seq.len >= min], breaks = 200)
 
 # 上面调好后执行这一句
 result <- fasta[seq.len >= min];
-bioinfor::write_fasta(result, paste0('data-raw/', name, '-trim.fasta'));
+bioinfor::write_fasta(result, paste0('', name, '-trim.fasta'));
 ```
 
 
@@ -96,7 +96,7 @@ write.csv(mat, 'mat.csv')
 ```
 
 ```r
-mat <- read.csv('data-raw/xie/mat.csv', row.names = 1)
+mat <- read.csv('xie/mat.csv', row.names = 1)
 
 lattice::levelplot(
     t(mat), col.regions=c('white','blue'), aspect = 'fill',
@@ -104,7 +104,7 @@ lattice::levelplot(
     xlab = NULL, ylab = NULL
 )
 ```
-![](image/xie/gene-coverage.png)
+![](xie/gene-coverage.png)
 
 
 
@@ -130,7 +130,7 @@ raxml_bat <- function(txt) {
 ```
 
 ```r
-txt.raw <- readr::read_lines('data-raw/xie/start_scheme.txt', skip = 8) %>%
+txt.raw <- readr::read_lines('xie/start_scheme.txt', skip = 8) %>%
     stringr::str_subset('^\\d') %>% stringr::str_remove(fixed('+G')) %>% 
     stringr::str_replace(fixed('+F'), 'F') %>% stringr::str_remove_all(' ')
 

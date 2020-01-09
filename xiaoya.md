@@ -19,7 +19,7 @@ library(tidyverse)
 
 ```r
 # I remove extra columns from original `.xlsx` to save space
-annotation_gene <- readxl::read_excel('data-raw/xiaoya/annotation-gene.xlsx')
+annotation_gene <- readxl::read_excel('xiaoya/annotation-gene.xlsx')
 
 annotation_go <- annotation_gene %>% 
     filter(!is.na(go)) %>% select(gene = gene_id, go) %>% 
@@ -51,10 +51,10 @@ write_tsv(annotation_go, 'annotation_go.tsv')
 就是把几个 `.csv` 文件合并一下，代码亲测能用，就不优化了。
 
 ```r
-genes <- readr::read_tsv('data-raw/xiaoya/Gene.list', 'gene', 'c')
+genes <- readr::read_tsv('xiaoya/Gene.list', 'gene', 'c')
 
 datas <- plyr::llply(
-    dir('data-raw/xiaoya', 'AlignReadsperGene', full.names = T),
+    dir('xiaoya', 'AlignReadsperGene', full.names = T),
     function(file) {
         data <- readr::read_tsv(file, c('gene', 'reads'), 'ci') %>% 
             merge(genes, ., by = 'gene', all.x = T, sort = T) %>% 
@@ -88,9 +88,9 @@ readr::write_csv(result, 'reads-per-gene.csv')
 ## prepare data
 
 ```r
-higher <- readr::read_csv('data-raw/xiaoya/higher.csv')
-lower <- readr::read_csv('data-raw/xiaoya/lower.csv')
-annotation <- readr::read_tsv('data-raw/xiaoya/trinotate.tsv.gz')
+higher <- readr::read_csv('xiaoya/higher.csv')
+lower <- readr::read_csv('xiaoya/lower.csv')
+annotation <- readr::read_tsv('xiaoya/trinotate.tsv.gz')
 
 df <- annotation %>% dplyr::rename(gene_id = '#gene_id') %>% 
     dplyr::select(gene_id, eggnog: gene_ontology_pfam) %>% 
@@ -122,18 +122,18 @@ enricher_go <- function(change) {
 ```
 
 ```r
-egoh <- enricher_go(higher) %T>% write_rds('data/enrich-go-higher.rds')
+egoh <- enricher_go(higher) %T>% write_rds('xiaoya/enrich-go-higher.rds')
 enrichplot::dotplot(egoh)
 ```
 
-![](image/xiaoya/enrich-go-higher.png)
+![](xiaoya/enrich-go-higher.png)
 
 ```r
-egol <- enricher_go(lower) %T>% write_rds('data/enrich-go-lower.rds')
+egol <- enricher_go(lower) %T>% write_rds('xiaoya/enrich-go-lower.rds')
 enrichplot::dotplot(egol)
 ```
 
-![](image/xiaoya/enrich-go-lower.png)
+![](xiaoya/enrich-go-lower.png)
 
 Aboving is [Fig 4](https://doi.org/10.1093/jisesa/iey114#F4) of the paper, though I forget how to get GO term (title).
 
@@ -161,14 +161,14 @@ ekeggh <- enricher_kegg(higher)
 enrichplot::dotplot(ekeggh)
 ```
 
-![](image/xiaoya/enrich-kegg-higher.png)
+![](xiaoya/enrich-kegg-higher.png)
 
 ```r
 ekeggl <- enricher_kegg(lower)
 enrichplot::dotplot(ekeggl)
 ```
 
-![](image/xiaoya/enrich-kegg-lower.png)
+![](xiaoya/enrich-kegg-lower.png)
 
 
 
@@ -190,11 +190,11 @@ ekoh <- enricher_ko(higher)
 enrichplot::dotplot(ekoh)
 ```
 
-![](image/xiaoya/enrich-ko-higher.png)
+![](xiaoya/enrich-ko-higher.png)
 
 ```r
 ekol <- enricher_ko(lower)
 enrichplot::dotplot(ekol)
 ```
 
-![](image/xiaoya/enrich-ko-lower.png)
+![](xiaoya/enrich-ko-lower.png)

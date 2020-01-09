@@ -50,7 +50,7 @@ ggplot(filter(lem4_mki67s, accession == 'GSE2990'), aes(log10(ANKLE2), log10(MKI
     ) + cowplot::theme_cowplot(12) + 
     labs(x = 'ANKLE2 (Log10)', y = 'MKI67 (Log10)')
 ```
-![](image/zhu/lem4-mki67-GSE2990.png)
+![](zhu/lem4-mki67-GSE2990.png)
 
 
 
@@ -64,7 +64,7 @@ ggplot(filter(lem4_mki67s, accession == 'GSE2990'), aes(log10(ANKLE2), log10(MKI
 ## 1. download raw data
 
 ```r
-read_tsv('data-raw/PRJNA390636.txt') %>% 
+read_tsv('zhu/zhu/PRJNA390636.txt') %>% 
     .$fastq_ftp %>% str_split(';') %>% unlist %>% 
     paste0('ftp://', .) %T>% print %>% write_lines('sra.md')
 #>  [1] "ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR568/000/SRR5687500/SRR5687500_1.fastq.gz"
@@ -129,8 +129,8 @@ for id in `ls *ballgown* | sed 's/-ballgown.gtf//'`; do cat "$HOME/GSE100075/ass
 
 ```r
 sample_table <- inner_join(
-	x <- read_tsv('data-raw/PRJNA390636.txt') %>% select(sample_accession, run_accession),
-	y <- xml2::read_xml('data-raw/GSE100075-biosample_result.xml') %>% 
+	x <- read_tsv('zhu/zhu/PRJNA390636.txt') %>% select(sample_accession, run_accession),
+	y <- xml2::read_xml('zhu/GSE100075-biosample_result.xml') %>% 
         xml2::as_list() %>% {.[[1]]} %>% 
         sapply(. %>% {c(id = .$Ids$Id[[1]], description = .$Description$Title[[1]])}) %>% 
 		t %>% as_tibble(),
@@ -143,7 +143,7 @@ sample_table <- inner_join(
 #> ...       
 #> 15 SRR5687514 SUM44_LTED_repl3   
 
-df <- read_lines('data-raw/GSE100075-ANKLE2.gtf') %>% {tibble(
+df <- read_lines('zhu/GSE100075-ANKLE2.gtf') %>% {tibble(
 		sample = str_extract(., 'SRR\\d+'), 
 		transcript = str_extract(., 'transcript_id "\\.\\w+'), 
 		FPKM = str_extract(., '(?<=FPKM ")[\\.\\d]+') %>% as.numeric, 
@@ -161,14 +161,14 @@ df <- read_lines('data-raw/GSE100075-ANKLE2.gtf') %>% {tibble(
 # 总体来看，FPKM 与 TPM 有很强的线性关系
 ggplot(df, aes(FPKM, TPM)) + geom_point() + geom_smooth(method = "lm")
 ```
-![](image/zhu/FPKM-TPM-GSE100075.png)
+![](zhu/FPKM-TPM-GSE100075.png)
 
 ```r
 # In every sample, FPKM 与 TPM 完美线性相关
 ggplot(df, aes(FPKM, TPM)) + geom_point() + geom_smooth(method = "lm") + facet_wrap(~sample, scales = 'free')
 ggsave('FPKM-TPM-per-sample-GSE100075.png', width = 6, height = 6)
 ```
-![](image/zhu/FPKM-TPM-per-sample-GSE100075.png)
+![](zhu/FPKM-TPM-per-sample-GSE100075.png)
 
 ```r
 df %>% group_by(sample) %>% 
@@ -189,7 +189,7 @@ df %>% group_by(sample) %>%
 #> ... 
 #> 5 SUM44_WT                15.8    2.99  SUM44    
 ```
-![](image/zhu/ANKLE-GSE100075.png)
+![](zhu/ANKLE-GSE100075.png)
 
 
 
@@ -219,7 +219,7 @@ There is neither ANKLE2 nor AURKA in GSE22219, I even searched all NM_*（ GI_* 
 ## GSE2034
 
 ```r
-matrix_raw <- readr::read_lines('data-raw/GSE/GSE2034_series_matrix.txt.gz')
+matrix_raw <- readr::read_lines('GSE/GSE2034_series_matrix.txt.gz')
 info <- matrix_raw %>% {
     tibble(
 	    sample = str_subset(., '^!Sample_geo_accession') %>% 
@@ -229,8 +229,8 @@ info <- matrix_raw %>% {
     )
 } %T>% print
 
-matrix <- qGSEA::read_gse_matrix('data-raw/GSE/GSE2034_series_matrix.txt.gz')
-chip <- qGSEA::read_gse_soft('data-raw/GSE/GSE2034_family.soft.gz')
+matrix <- qGSEA::read_gse_matrix('GSE/GSE2034_series_matrix.txt.gz')
+chip <- qGSEA::read_gse_soft('GSE/GSE2034_family.soft.gz')
 expression_df <- chip %>% filter(symbol %in% c('ANKLE2', 'AURKA')) %>%
 	inner_join(matrix) %T>% print
 ```
@@ -287,14 +287,14 @@ from Ivshina2006
 - Uppsala cohort, Information pertaining to breast cancer therapy, clinical follow-up, and sample processing are described elsewhere 
 
 ```bash
-cat data-raw/GSE/GSE4922_family.soft | grep -P '(?:ANKLE2|AURKA)\s' > data-raw/GSE/GSE4922-ANKLE2_AURKA.soft
-cat data-raw/GSE/GSE4922-GPL96_series_matrix.txt | grep -P '^!Sample_' > data-raw/GSE/GSE4922-GPL96-sample.info
+cat GSE/GSE4922_family.soft | grep -P '(?:ANKLE2|AURKA)\s' > GSE/GSE4922-ANKLE2_AURKA.soft
+cat GSE/GSE4922-GPL96_series_matrix.txt | grep -P '^!Sample_' > GSE/GSE4922-GPL96-sample.info
 ```
 
 ```r
-soft2 <- read_lines('data-raw/GSE/GSE4922-ANKLE2_AURKA.soft') %>% 
+soft2 <- read_lines('GSE/GSE4922-ANKLE2_AURKA.soft') %>% 
 	{tibble(probe = str_extract(., '\\w+'), symbol = str_extract(., 'ANKLE2|AURKA'))}
-matrix_raw2 <- read_lines('data-raw/GSE/GSE4922-GPL96_series_matrix.txt.gz')
+matrix_raw2 <- read_lines('GSE/GSE4922-GPL96_series_matrix.txt.gz')
 
 sample_df2 <- matrix_raw2 %>% str_subset('^!Sample_') %>% str_split('\t') %>% 
     do.call(rbind, .)%>% plyr::aaply(2, . %>% paste0(collapse = '\t')) %>% 
@@ -316,7 +316,7 @@ info2 <- bind_cols(
         mutate_at(1, . %>% str_extract('(?<=: )\\d$') %>% {. == '1'})
 ) %T>% print
 
-matrix <- qGSEA::read_gse_matrix('data-raw/GSE/GSE4922-GPL96_series_matrix.txt.gz')
+matrix <- qGSEA::read_gse_matrix('GSE/GSE4922-GPL96_series_matrix.txt.gz')
 expression_df2 <- matrix %>% rename(probe = ID_REF) %>% inner_join(soft2, .)
 ```
 

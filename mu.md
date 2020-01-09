@@ -14,7 +14,7 @@ First, let's look at our data. The first column Entrez gene id, others are norma
 
 ```r
 # I remove some columns from original `.xlsx` to save space
-fpkm <- readxl::read_excel('data-raw/穆成龙+SDHB+KO+RNA+seq+result.FPKM.xlsx') %>% 
+fpkm <- readxl::read_excel('mu/穆成龙+SDHB+KO+RNA+seq+result.FPKM.xlsx') %>% 
     dplyr::select(1, dplyr::starts_with('BF')) %T>% print;
 #> # A tibble: 18,458 x 21                                                       
 #>    gene_id BFKC106_FPKM BFKC128_FPKM BFKC144_FPKM BFKC61_FPKM BFKC63_FPKM
@@ -67,24 +67,24 @@ Now we can perform KEGG enrichment and plot the result
 
 ```r
 ekegg <- clusterProfiler::enrichKEGG(DE_gene, 'mmu') %T>% 
-    readr::write_rds('data/kegg-enrich.rds')
+    readr::write_rds('mu/kegg-enrich.rds')
 
 clusterProfiler::dotplot(ekegg, showCategory = Inf) + 
     ggplot2::labs(title = 'KEGG enrichment of DE (p < 0.05) genes casued by food') +
     ggplot2::theme(plot.title = ggplot2::element_text(hjust = 0.5, size = 12))
 ```
-![](image/mu/kegg-enrich.png)
+![](mu/kegg-enrich.png)
 
 
 
 ## browse kegg pathway 
 
 ```r
-ekegg <- readr::read_rds('data/kegg-enrich.rds')
+ekegg <- readr::read_rds('mu/kegg-enrich.rds')
 clusterProfiler::browseKEGG(ekegg, ekegg@result$ID[5])
 ```
 
-![](image/mu/mmu01200.png)
+![](mu/mmu01200.png)
 
 I saved the result on 2018-05-31, when I rerun the code on 2019-04-05, it seems quite different.
 
@@ -100,4 +100,4 @@ I tried a variety of combinations (the result is not shown), i.e, using 0.01 vs 
 
 When I look back on 2019-04-05, I find a interesting point. If you looks at the first row and then the second row (I use p<0.01 for DE), it seems like knock-out of SDHB has similar effect as high hat feed.
 
-![](image/mu/various-combinations.png)
+![](mu/various-combinations.png)

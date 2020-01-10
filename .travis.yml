@@ -3,9 +3,10 @@ language: minimal
 cache: 
   directories: $HOME/.local/lib/R/site-library
 script: 
-  - docker run -dt --name rlang0 -w /root -e CONTINUOUS_INTEGRATION=$CONTINUOUS_INTEGRATION -v $HOME/.local/lib/R/site-library:/usr/local/lib/R/site-library dongzhuoer/rlang:remotes 2> /dev/null
+  - docker run -dt --name rlang0 -w /root -e CONTINUOUS_INTEGRATION=$CONTINUOUS_INTEGRATION -v $HOME/.local/lib/R/site-library:/usr/local/lib/R/site-library dongzhuoer/rlang:rmarkdown 2> /dev/null
+  - docker exec rlang0 R -e "remotes::update_packages('prettydoc')"
+  - docker exec rlang0 R -e "remotes::install_github('dongzhuoer/ggcsgb', upgrade = TRUE)"
   - docker cp ./. rlang0:/root
-  - docker exec rlang0 R -e "remotes::install_local(force = TRUE, upgrade = TRUE, dependencies = TRUE)"
-  - docker exec -e GITHUB_PAT=$GITHUB_PAT rlang0 Rscript -e "rmarkdown::render('ggcsg.Rmd', output_format = 'prettydoc::html_pretty')"
-  - docker exec rlang0 test -f ggcsg.html || exit 1
+  - docker exec -e GITHUB_PAT=$GITHUB_PAT rlang0 Rscript -e "rmarkdown::render('ggcsgb.Rmd', output_format = 'prettydoc::html_pretty')"
+  - docker exec rlang0 test -f ggcsgb.html || exit 1
   - docker exec rlang0 chown -R `id -u`:`id -g` /usr/local/lib/R/site-library
